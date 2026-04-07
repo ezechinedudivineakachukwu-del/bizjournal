@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BizJournal - AI Business Journal</title>
+  <link rel="icon" type="image/png" href="./Modern bizjournal logo design.png">
+  <link rel="apple-touch-icon" href="./Modern bizjournal logo design.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --gold: #FBBF24;
+      --purple: #A855F7;
+      --coral: #FB7185;
+      --dark: #0F172A;
+      --darker: #111827;
+      --darkest: #1A1F47;
+      --surface: #1E293B;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-hint: rgba(255,255,255,0.3);
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 50%, var(--darkest) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--cyan), var(--purple)); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--cyan-dark), #7E22CE); }
+    
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: white;
+      box-shadow: 0 8px 16px rgba(6, 182, 212, 0.3);
+    }
+    
+    .logo-text {
+      font-weight: 800;
+      font-size: 20px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: var(--cyan);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--cyan);
+    }
+    
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--cyan);
+      padding: 0.5rem 1.25rem;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+    
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--cyan) 40%, var(--gold) 70%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 0.8s ease;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      line-height: 1.8;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* FEATURES */
+    .features {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      font-size: 12px;
+      color: var(--cyan);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    .section-heading {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(26, 31, 71, 0.3) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .feature-card:hover {
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(26, 31, 71, 0.5) 100%);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(6, 182, 212, 0.15);
+    }
+    
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    
+    .feature-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    
+    /* PRICING */
+    .pricing {
+      padding: 6rem 2rem;
+      background: rgba(6, 182, 212, 0.02);
+    }
+    
+    .pricing-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .price-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 71, 0.4) 100%);
+      border: 2px solid rgba(6, 182, 212, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .price-card.featured {
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+      transform: scale(1.05);
+    }
+    
+    .price-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--cyan);
+    }
+    
+    .badge-pro {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      display: none;
+    }
+    
+    .price-card.featured .badge-pro {
+      display: block;
+    }
+    
+    .plan-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .plan-price {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+    
+    .plan-price span {
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+    
+    .plan-features {
+      list-style: none;
+      margin: 2rem 0;
+    }
+    
+    .plan-features li {
+      padding: 0.75rem 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-bottom: 1px solid rgba(6, 182, 212, 0.05);
+    }
+    
+    .plan-features li:before {
+      content: '✓ ';
+      color: var(--cyan);
+      font-weight: 700;
+      margin-right: 0.5rem;
+    }
+    
+    /* CTA */
+    .final-cta {
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    
+    .final-cta h2 {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
+    
+    .final-cta p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-hint);
+      font-size: 12px;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .section-heading {
+        font-size: 36px;
+      }
+      
+      .plan-price {
+        font-size: 36px;
+      }
+      
+      .price-card.featured {
+        transform: scale(1);
+      }
+      
+      h1 {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">BJ</div>
+      <div class="logo-text">BizJournal</div>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="login.html" class="btn btn-secondary">Sign In</a>
+      <a href="register.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">
+        <div class="dot"></div>
+        <span>AI-Powered Business Journal</span>
+      </div>
+      
+      <h1>Transform Your Thoughts Into Strategic Action</h1>
+      
+      <p class="subtitle">
+        The only journal designed for founders, executives, and deal makers. Write freely. Get AI insights. Close more deals.
+      </p>
+      
+      <div class="cta-buttons">
+        <a href="register.html" class="btn btn-primary">Start Free Today</a>
+        <a href="login.html" class="btn btn-secondary">Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-title">Why BizJournal</div>
+    <h2 class="section-heading">Built For Serious Business Leaders</h2>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">AI Business Advisor</div>
+        <div class="feature-desc">Your personal AI reads your journal and gives you actionable insights, not generic advice.</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Deal Tracker</div>
+        <div class="feature-desc">Monitor pipelines, track deal value, and get alerted when opportunities stall.</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Weekly Insights</div>
+        <div class="feature-desc">AI-generated summaries surface patterns in your decisions and performance.</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">Smart Templates</div>
+        <div class="feature-desc">Daily reviews, meetings notes, decision logs — pre-built for business thinking.</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Privacy First</div>
+        <div class="feature-desc">Your journal is encrypted. We never train AI on your data.</div>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Lightning Fast</div>
+        <div class="feature-desc">Clean editor that gets out of your way so you can think.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-content">
+      <div class="section-title">Simple Pricing</div>
+      <h2 class="section-heading">Plans That Scale With You</h2>
+      
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">Free<span>/month</span></div>
+          <ul class="plan-features">
+            <li>10 entries/month</li>
+            <li>20 AI messages</li>
+            <li>Basic templates</li>
+            <li>Export to PDF</li>
+          </ul>
+          <button class="btn btn-secondary" style="width: 100%;">Get Started</button>
+        </div>
+        
+        <div class="price-card featured">
+          <div class="badge-pro">Most Popular</div>
+          <div class="plan-name">Professional</div>
+          <div class="plan-price">$29<span>/month</span></div>
+          <ul class="plan-features">
+            <li>Unlimited entries</li>
+            <li>Unlimited AI messages</li>
+            <li>Weekly AI insights</li>
+            <li>Advanced templates</li>
+            <li>Deal tracking</li>
+            <li>Analytics dashboard</li>
+          </ul>
+          <button class="btn btn-primary" style="width: 100%;">Start Free Trial</button>
+        </div>
+        
+        <div class="price-card">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price">Custom</div>
+          <ul class="plan-features">
+            <li>Everything in Pro</li>
+            <li>Team collaboration</li>
+            <li>Custom AI training</li>
+            <li>SSO & security</li>
+            <li>Dedicated support</li>
+          </ul>
+          <button class="btn btn-secondary" style="width: 100%;">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <h2>Ready to journal like a professional?</h2>
+    <p>Join 5,000+ founders and executives who are journaling with purpose.</p>
+    <button class="btn btn-primary">Start Your Free Journal</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 BizJournal. Transform thoughts into action. | Privacy Policy | Terms of Service</p>
+  </footer>
+</body>
+</html>

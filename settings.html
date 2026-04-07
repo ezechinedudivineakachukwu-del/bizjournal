@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - BizJournal</title>
+  <link rel="icon" type="image/png" href="./Modern bizjournal logo design.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --gold: #FBBF24;
+      --purple: #A855F7;
+      --coral: #FB7185;
+      --dark: #0F172A;
+      --darker: #111827;
+      --darkest: #1A1F47;
+      --surface: #1E293B;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-hint: rgba(255,255,255,0.3);
+    }
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 50%, var(--darkest) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--cyan), var(--purple)); border-radius: 4px; }
+    
+    /* LAYOUT */
+    .container {
+      min-height: 100vh;
+    }
+    
+    /* SIDEBAR */
+    .sidebar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.95));
+      border-right: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: fixed;
+      width: 220px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .sidebar-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    
+    .sidebar-logo-text {
+      font-weight: 700;
+      font-size: 16px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .sidebar-item {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+    }
+    
+    /* MAIN */
+    .main {
+      display: flex;
+      flex-direction: column;
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+    
+    /* TOP BAR */
+    .topbar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    /* CONTENT */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+    }
+    
+    /* SECTIONS */
+    .settings-section {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(17, 24, 39, 0.95));
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+    }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .section-title span {
+      font-size: 20px;
+    }
+    
+    .setting-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .setting-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .setting-value {
+      font-size: 14px;
+      color: var(--text);
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    select {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.94));
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+    
+    select option {
+      background: #111827;
+      color: var(--text);
+    }
+
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    select::placeholder {
+      color: var(--text-hint);
+    }
+    
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+    }
+    
+    /* TOGGLE SWITCH */
+    .toggle-switch {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .toggle-switch-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(6, 182, 212, 0.2);
+      transition: 0.3s;
+      border-radius: 28px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--cyan);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    
+    /* BUTTONS */
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    
+    .btn-danger {
+      background: transparent;
+      color: var(--coral);
+      border: 1px solid var(--coral);
+    }
+    
+    .btn-danger:hover {
+      background: rgba(251, 113, 133, 0.1);
+    }
+    
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(6, 182, 212, 0.1);
+      margin: 2rem 0;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -220px;
+        width: 220px;
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s ease;
+      }
+      
+      .sidebar.open {
+        left: 0;
+      }
+      
+      .main {
+        margin-left: 0;
+      }
+      
+      .topbar {
+        padding: 1rem;
+      }
+      
+      .content {
+        padding: 1rem;
+      }
+      
+      .setting-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar-logo">
+        <div class="sidebar-logo-icon">BJ</div>
+        <div class="sidebar-logo-text">BizJournal</div>
+      </a>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-item">
+          <span>📊</span> Dashboard
+        </a>
+        <a href="editor.html" class="sidebar-item">
+          <span>✏️</span> New Entry
+        </a>
+        <a href="ai-chat.html" class="sidebar-item">
+          <span>✨</span> AI Assistant
+        </a>
+      </nav>
+      
+      <div style="flex: 1;"></div>
+      
+      <div class="sidebar-nav">
+        <a href="settings.html" class="sidebar-item active">
+          <span>⚙️</span> Settings
+        </a>
+        <a href="index.html" class="sidebar-item">
+          <span>🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <!-- TOP BAR -->
+      <div class="topbar">
+        <div class="topbar-title">⚙️ Settings</div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- PROFILE SECTION -->
+        <div class="settings-section">
+          <div class="section-title">
+            <span>👤</span> Profile
+          </div>
+          
+          <div class="setting-row">
+            <div class="setting-item">
+              <label class="setting-label">First Name</label>
+              <input type="text" value="John" placeholder="First name">
+            </div>
+            <div class="setting-item">
+              <label class="setting-label">Last Name</label>
+              <input type="text" value="Doe" placeholder="Last name">
+            </div>
+          </div>
+          
+          <div class="setting-row">
+            <div class="setting-item">
+              <label class="setting-label">Email</label>
+              <input type="email" value="john@example.com" placeholder="Email">
+            </div>
+            <div class="setting-item">
+              <label class="setting-label">Phone</label>
+              <input type="text" value="+1 (555) 000-0000" placeholder="Phone">
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          <div class="button-group">
+            <button class="btn btn-primary">Save Changes</button>
+            <button class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+
+        <!-- PLAN SECTION -->
+        <div class="settings-section">
+          <div class="section-title">
+            <span>💳</span> Plan & Billing
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <div class="setting-label">Current Plan</div>
+            <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(251, 113, 133, 0.05)); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 10px; padding: 1rem; margin-top: 0.5rem;">
+              <div style="font-size: 14px; font-weight: 600; display: flex; justify-content: space-between;">
+                <span>Pro Plan</span>
+                <span style="color: var(--gold);">$29/mo</span>
+              </div>
+              <div style="color: var(--text-muted); font-size: 12px; margin-top: 0.5rem;">Unlimited entries • AI assistant • Priority support</div>
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          <div class="button-group">
+            <button class="btn btn-secondary">Update Payment</button>
+            <button class="btn btn-secondary">Upgrade Plan</button>
+          </div>
+        </div>
+
+        <!-- PREFERENCES SECTION -->
+        <div class="settings-section">
+          <div class="section-title">
+            <span>📋</span> Preferences
+          </div>
+          
+          <div class="toggle-switch">
+            <label class="toggle-switch-label">Email Notifications</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-switch">
+            <label class="toggle-switch-label">Weekly Digest</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-switch">
+            <label class="toggle-switch-label">AI Insights</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-switch">
+            <label class="toggle-switch-label">Dark Mode</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div style="margin-top: 1.5rem;">
+            <label class="setting-label">Default Entry Template</label>
+            <select style="margin-top: 0.5rem;">
+              <option>Daily Review</option>
+              <option>Deal Tracker</option>
+              <option>Free Write</option>
+              <option>Decision Log</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SECURITY SECTION -->
+        <div class="settings-section">
+          <div class="section-title">
+            <span>🔒</span> Security
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <div class="setting-label">Password</div>
+            <div style="color: var(--text); font-size: 14px; margin-top: 0.5rem;">••••••••</div>
+          </div>
+          
+          <div class="divider"></div>
+          <div class="button-group">
+            <button class="btn btn-secondary">Change Password</button>
+            <button class="btn btn-secondary">2-Factor Auth</button>
+          </div>
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="settings-section" style="border-color: rgba(251, 113, 133, 0.2); background: linear-gradient(135deg, rgba(251, 113, 133, 0.05), rgba(251, 113, 133, 0.02));">
+          <div class="section-title" style="color: var(--coral);">
+            <span>⚠️</span> Danger Zone
+          </div>
+          
+          <div style="color: var(--text-muted); font-size: 13px; margin-bottom: 1.5rem;">
+            These actions are permanent and cannot be undone.
+          </div>
+          
+          <div class="button-group">
+            <button class="btn btn-danger">Delete All Data</button>
+            <button class="btn btn-danger">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle switches
+    document.querySelectorAll('.switch input').forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        console.log('Preference updated:', this.checked);
+      });
+    });
+  </script>
+</body>
+</html>

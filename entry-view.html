@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal Entry - BizJournal</title>
+  <link rel="icon" type="image/png" href="./Modern bizjournal logo design.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --gold: #FBBF24;
+      --purple: #A855F7;
+      --coral: #FB7185;
+      --dark: #0F172A;
+      --darker: #111827;
+      --darkest: #1A1F47;
+      --surface: #1E293B;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-hint: rgba(255,255,255,0.3);
+    }
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 50%, var(--darkest) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--cyan), var(--purple)); border-radius: 4px; }
+    
+    /* LAYOUT */
+    .container {
+      min-height: 100vh;
+    }
+    
+    /* SIDEBAR */
+    .sidebar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.95));
+      border-right: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: fixed;
+      width: 220px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .sidebar-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    
+    .sidebar-logo-text {
+      font-weight: 700;
+      font-size: 16px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .sidebar-item {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+    }
+    
+    /* MAIN */
+    .main {
+      display: flex;
+      flex-direction: column;
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+    
+    /* TOP BAR */
+    .topbar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .topbar-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(26, 31, 71, 0.3));
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .btn-icon:hover {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    
+    /* CONTENT */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    /* ENTRY HEADER */
+    .entry-header {
+      margin-bottom: 2rem;
+    }
+    
+    .entry-title {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    .meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(251, 113, 133, 0.1));
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      color: var(--text);
+    }
+    
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(6, 182, 212, 0.1);
+      margin: 2rem 0;
+    }
+    
+    /* ENTRY CONTENT */
+    .entry-content {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(17, 24, 39, 0.95));
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      line-height: 1.9;
+      font-size: 15px;
+      color: var(--text);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    }
+    
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    
+    .tag {
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(251, 191, 36, 0.08));
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    
+    .tag:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(251, 191, 36, 0.12));
+    }
+    
+    /* AI INSIGHTS */
+    .insights-section {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(251, 113, 133, 0.05));
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .insights-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .insight-item {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+    }
+    
+    .insight-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .insight-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    
+    /* BUTTONS */
+    .button-group {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(6, 182, 212, 0.1);
+      color: var(--cyan);
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -220px;
+        width: 220px;
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s ease;
+      }
+      
+      .sidebar.open {
+        left: 0;
+      }
+      
+      .main {
+        margin-left: 0;
+      }
+      
+      .topbar {
+        padding: 1rem;
+      }
+      
+      .content {
+        padding: 1rem;
+      }
+      
+      .entry-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .entry-content {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar-logo">
+        <div class="sidebar-logo-icon">BJ</div>
+        <div class="sidebar-logo-text">BizJournal</div>
+      </a>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-item">
+          <span>📊</span> Dashboard
+        </a>
+        <a href="editor.html" class="sidebar-item">
+          <span>✏️</span> New Entry
+        </a>
+        <a href="ai-chat.html" class="sidebar-item">
+          <span>✨</span> AI Assistant
+        </a>
+      </nav>
+      
+      <div style="flex: 1;"></div>
+      
+      <div class="sidebar-nav">
+        <a href="settings.html" class="sidebar-item">
+          <span>⚙️</span> Settings
+        </a>
+        <a href="index.html" class="sidebar-item">
+          <span>🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <!-- TOP BAR -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <a href="dashboard.html" class="btn-icon">←</a>
+          <span style="color: var(--text-muted); font-size: 14px;">Back to Dashboard</span>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-icon" title="Edit">✏️</button>
+          <button class="btn-icon" title="Share">🔗</button>
+          <button class="btn-icon" title="Delete">🗑️</button>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- ENTRY HEADER -->
+        <div class="entry-header">
+          <h1 class="entry-title">Closed $250K Deal with Tech Corp</h1>
+          
+          <div class="entry-meta">
+            <div class="meta-item">
+              <span>📅</span>
+              <strong>March 14, 2024</strong>
+            </div>
+            <div class="meta-item">
+              <span>😊</span>
+              <strong>Mood: Excited</strong>
+            </div>
+            <div class="meta-item">
+              <span>📝</span>
+              <strong>Template: Deal Tracker</strong>
+            </div>
+            <div class="badge">BUSINESS</div>
+          </div>
+        </div>
+
+        <!-- ENTRY CONTENT -->
+        <div class="entry-content">
+          <p>
+            Today was an incredible day! After weeks of negotiations and careful planning, we finally closed the $250K deal with Tech Corp. This is a massive milestone for our business and validates all the hard work our team has put in.
+          </p>
+          <p style="margin-top: 1rem;">
+            The client loved our proposal, especially the custom integration framework we developed. They appreciated how we understood their pain points and delivered solutions that were both innovative and practical. The negotiation was smooth, and they signed off without major changes to the final terms.
+          </p>
+          <p style="margin-top: 1rem;">
+            What went right: Our thorough preparation, the relationships we've built with their team, and the clear value proposition. I'm particularly proud of how Sarah's team executed the technical demo – it was flawless.
+          </p>
+          <p style="margin-top: 1rem;">
+            Next steps: Onboarding starts next week. I need to ensure our delivery team is fully prepared and that we set clear expectations for the implementation timeline. This partnership has huge potential for additional projects.
+          </p>
+          
+          <div class="tags">
+            <span class="tag">#deal-closed</span>
+            <span class="tag">#milestone</span>
+            <span class="tag">#partnership</span>
+            <span class="tag">#250k</span>
+            <span class="tag">#tech-corp</span>
+          </div>
+        </div>
+
+        <!-- AI INSIGHTS -->
+        <div class="insights-section">
+          <div class="insights-title">
+            <span>✨</span> AI Insights
+          </div>
+          
+          <div class="insight-item">
+            <div style="font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 0.5rem;">💡 Key Achievement Detected</div>
+            <div class="insight-text">
+              This entry marks a significant milestone. The $250K deal represents a 40% increase in your average deal size over the past 12 months. Consider analyzing what made this negotiation successful for future deals.
+            </div>
+          </div>
+          
+          <div class="insight-item">
+            <div style="font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 0.5rem;">📊 Pattern Recognition</div>
+            <div class="insight-text">
+              Comparing your entries, you tend to close larger deals when you invest time in relationship building before the proposal phase. This deal fits that pattern. Continue prioritizing early client connections.
+            </div>
+          </div>
+          
+          <div class="insight-item">
+            <div style="font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 0.5rem;">🎯 Recommended Action</div>
+            <div class="insight-text">
+              Document your successful negotiation approach (prep, demo execution, team coordination) as a playbook for the team. Your process has proven effective and should be replicated for similar opportunities.
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="button-group">
+          <button class="btn btn-primary">Edit Entry</button>
+          <button class="btn btn-secondary">Ask AI About This</button>
+          <button class="btn btn-secondary">Export</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Button actions
+    document.querySelector('.btn-icon[title="Edit"]').addEventListener('click', function() {
+      window.location.href = 'editor.html';
+    });
+    
+    document.querySelector('.btn-icon[title="Share"]').addEventListener('click', function() {
+      alert('Share functionality coming soon!');
+    });
+    
+    document.querySelector('.btn-icon[title="Delete"]').addEventListener('click', function() {
+      if (confirm('Are you sure you want to delete this entry?')) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

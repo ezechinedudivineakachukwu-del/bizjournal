@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@400;700&display=swap');
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: linear-gradient(135deg, #0F172A 0%, #111827 50%, #1A1F47 100%);
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #111827; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #06B6D4, #A855F7); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #0891B2, #7E22CE); }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-brand to-accent text-white font-semibold text-sm px-5 py-2.5 rounded-lg
+           transition-all hover:shadow-lg hover:shadow-brand/50 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  }
+  .btn-secondary {
+    @apply bg-surface-2 text-white/80 font-medium text-sm px-5 py-2.5 rounded-lg
+           border border-white/[0.08] transition-all hover:bg-surface-3 hover:text-white hover:border-brand/30
+           active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply text-white/50 font-medium text-sm px-4 py-2 rounded-lg
+           transition-all hover:text-white hover:bg-white/[0.05];
+  }
+  .btn-danger {
+    @apply border border-coral/30 text-coral font-medium text-sm px-4 py-2
+           rounded-lg transition-all hover:bg-coral/10;
+  }
+  .input {
+    @apply w-full bg-surface border border-brand/20 rounded-lg px-4 py-2.5
+           text-sm text-white placeholder:text-white/25 outline-none
+           transition-all focus:border-brand/50 focus:ring-2 focus:ring-brand/20;
+  }
+  .card {
+    @apply bg-gradient-to-br from-surface to-surface-2 border border-brand/20 rounded-xl p-5
+           transition-all hover:border-brand/50 shadow-lg shadow-black/20;
+  }
+  .card-elevated {
+    @apply bg-gradient-to-br from-surface-2 to-surface-3 border border-brand/10 rounded-xl p-5;
+  }
+  .tag {
+    @apply text-[10px] font-mono px-2 py-0.5 rounded
+           bg-brand/10 text-brand/80 border border-brand/20;
+  }
+  .plan-badge-free { @apply text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-white/40 border border-white/10; }
+  .plan-badge-pro { @apply text-[10px] font-mono px-2 py-0.5 rounded bg-brand/10 text-brand border border-brand/20; }
+  .plan-badge-enterprise { @apply text-[10px] font-mono px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20; }
+  .section-label { @apply text-[10px] font-mono text-brand/70 tracking-widest uppercase mb-1; }
+  .prose-journal { @apply font-mono text-sm text-white/70 leading-[1.9] whitespace-pre-wrap; }
+}

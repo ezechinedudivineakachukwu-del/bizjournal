@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Entry - BizJournal</title>
+  <link rel="icon" type="image/png" href="./Modern bizjournal logo design.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --gold: #FBBF24;
+      --purple: #A855F7;
+      --coral: #FB7185;
+      --dark: #0F172A;
+      --darker: #111827;
+      --darkest: #1A1F47;
+      --surface: #1E293B;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-hint: rgba(255,255,255,0.3);
+    }
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 50%, var(--darkest) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--cyan), var(--purple)); border-radius: 4px; }
+    
+    /* LAYOUT */
+    .container {
+      min-height: 100vh;
+    }
+    
+    /* SIDEBAR */
+    .sidebar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.95));
+      border-right: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: fixed;
+      width: 220px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .sidebar-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    
+    .sidebar-logo-text {
+      font-weight: 700;
+      font-size: 16px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .sidebar-item {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+    }
+    
+    /* MAIN */
+    .main {
+      display: flex;
+      flex-direction: column;
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+    
+    /* TOP BAR */
+    .topbar {
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .topbar-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(6, 182, 212, 0.35);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    
+    /* CONTENT */
+    .content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    /* FORM */
+    .form-group {
+      margin-bottom: 2rem;
+    }
+    
+    .form-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(26, 31, 71, 0.3));
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(26, 31, 71, 0.5));
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+    
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: var(--text-hint);
+    }
+    
+    .title-input {
+      font-size: 28px;
+      font-weight: 700;
+      border: none !important;
+      background: none !important;
+      padding: 0 !important;
+      margin-bottom: 2rem;
+    }
+    
+    .title-input:focus {
+      box-shadow: none !important;
+    }
+    
+    .content-textarea {
+      min-height: 400px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      resize: vertical;
+    }
+    
+    /* TEMPLATE GRID */
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .template-option {
+      padding: 1rem;
+      border: 2px solid rgba(6, 182, 212, 0.1);
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.3), rgba(26, 31, 71, 0.2));
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .template-option:hover {
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(26, 31, 71, 0.4));
+    }
+    
+    .template-option.active {
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.05));
+      color: var(--cyan);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+    }
+    
+    .template-icon {
+      font-size: 24px;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* MOOD SELECTOR */
+    .mood-selector {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .mood-btn {
+      font-size: 24px;
+      background: none;
+      border: 2px solid rgba(6, 182, 212, 0.1);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+    
+    .mood-btn:hover,
+    .mood-btn.active {
+      opacity: 1;
+      border-color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+    }
+    
+    /* TAGS */
+    .tags-input-wrapper {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.95));
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 12px;
+      min-height: 44px;
+    }
+    
+    .tag-item {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      color: var(--cyan);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 12px;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .tag-remove {
+      cursor: pointer;
+      color: var(--coral);
+      font-weight: 700;
+    }
+    
+    .tags-input {
+      flex: 1;
+      min-width: 100px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: var(--text);
+    }
+    
+    .tags-input:focus {
+      outline: none;
+    }
+    
+    /* ACTIONS */
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(6, 182, 212, 0.1);
+    }
+    
+    .btn-save {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+    }
+    
+    .btn-cancel {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .btn-cancel:hover {
+      background: rgba(6, 182, 212, 0.1);
+      color: var(--cyan);
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -220px;
+        width: 220px;
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s ease;
+      }
+      
+      .sidebar.open {
+        left: 0;
+      }
+      
+      .main {
+        margin-left: 0;
+      }
+      
+      .topbar {
+        padding: 1rem;
+      }
+      
+      .content {
+        padding: 1rem;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar-logo">
+        <div class="sidebar-logo-icon">BJ</div>
+        <div class="sidebar-logo-text">BizJournal</div>
+      </a>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-item">
+          <span>📊</span> Dashboard
+        </a>
+        <a href="editor.html" class="sidebar-item active">
+          <span>✏️</span> New Entry
+        </a>
+        <a href="ai-chat.html" class="sidebar-item">
+          <span>✨</span> AI Assistant
+        </a>
+      </nav>
+      
+      <div style="flex: 1;"></div>
+      
+      <div class="sidebar-nav">
+        <a href="settings.html" class="sidebar-item">
+          <span>⚙️</span> Settings
+        </a>
+        <a href="index.html" class="sidebar-item">
+          <span>🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <!-- TOP BAR -->
+      <div class="topbar">
+        <div class="topbar-title">New Entry</div>
+        <div class="topbar-actions">
+          <a href="dashboard.html" class="btn btn-secondary">Cancel</a>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <form id="entryForm">
+          <!-- TITLE -->
+          <input type="text" class="title-input" placeholder="Entry title..." id="title">
+          
+          <!-- TEMPLATE SELECTION -->
+          <div class="form-group">
+            <label class="form-label">Journal Template</label>
+            <div class="template-grid">
+              <div class="template-option active" data-template="daily">
+                <div class="template-icon">📅</div>
+                <div>Daily Review</div>
+              </div>
+              <div class="template-option" data-template="deal">
+                <div class="template-icon">💰</div>
+                <div>Deal Tracker</div>
+              </div>
+              <div class="template-option" data-template="meeting">
+                <div class="template-icon">📋</div>
+                <div>Meeting Notes</div>
+              </div>
+              <div class="template-option" data-template="decision">
+                <div class="template-icon">🎯</div>
+                <div>Decision Log</div>
+              </div>
+              <div class="template-option" data-template="weekly">
+                <div class="template-icon">📊</div>
+                <div>Weekly Review</div>
+              </div>
+              <div class="template-option" data-template="freewrite">
+                <div class="template-icon">✍️</div>
+                <div>Free Write</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MOOD -->
+          <div class="form-group">
+            <label class="form-label">How are you feeling?</label>
+            <div class="mood-selector">
+              <button type="button" class="mood-btn" data-mood="excellent">🚀</button>
+              <button type="button" class="mood-btn" data-mood="good">😊</button>
+              <button type="button" class="mood-btn active" data-mood="neutral">😐</button>
+              <button type="button" class="mood-btn" data-mood="challenging">😤</button>
+              <button type="button" class="mood-btn" data-mood="difficult">💔</button>
+            </div>
+          </div>
+
+          <!-- CONTENT -->
+          <div class="form-group">
+            <label class="form-label">Your Entry</label>
+            <textarea class="content-textarea" id="content" placeholder="Start writing..."></textarea>
+          </div>
+
+          <!-- TAGS -->
+          <div class="form-group">
+            <label class="form-label">Tags</label>
+            <div class="tags-input-wrapper" id="tagsWrapper">
+              <input type="text" class="tags-input" id="tagsInput" placeholder="Add tag and press Enter...">
+            </div>
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Save Entry</button>
+            <a href="dashboard.html" class="btn-cancel">Discard</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Template selection
+    document.querySelectorAll('.template-option').forEach(option => {
+      option.addEventListener('click', function() {
+        const template = this.dataset.template;
+        window.location.href = `${template}.html`;
+      });
+    });
+
+    // Mood selection
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Tags input
+    const tagsWrapper = document.getElementById('tagsWrapper');
+    const tagsInput = document.getElementById('tagsInput');
+    let tags = [];
+
+    tagsInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const tag = tagsInput.value.trim();
+        if (tag && !tags.includes(tag)) {
+          tags.push(tag);
+          renderTags();
+          tagsInput.value = '';
+        }
+      }
+    });
+
+    function renderTags() {
+      tagsWrapper.innerHTML = '';
+      tags.forEach(tag => {
+        const tagEl = document.createElement('div');
+        tagEl.className = 'tag-item';
+        tagEl.innerHTML = `${tag} <span class="tag-remove" data-tag="${tag}">×</span>`;
+        tagsWrapper.appendChild(tagEl);
+      });
+      tagsWrapper.appendChild(tagsInput);
+      
+      document.querySelectorAll('.tag-remove').forEach(btn => {
+        btn.addEventListener('click', function() {
+          tags = tags.filter(t => t !== this.dataset.tag);
+          renderTags();
+        });
+      });
+    }
+
+    // Form submission
+    document.getElementById('entryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Entry saved! ✅');
+      // Here you would send data to backend
+    });
+  </script>
+</body>
+</html>

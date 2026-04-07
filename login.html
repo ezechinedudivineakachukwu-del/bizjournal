@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BizJournal</title>
+  <link rel="icon" type="image/png" href="./Modern bizjournal logo design.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --gold: #FBBF24;
+      --purple: #A855F7;
+      --coral: #FB7185;
+      --dark: #0F172A;
+      --darker: #111827;
+      --darkest: #1A1F47;
+      --surface: #1E293B;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-hint: rgba(255,255,255,0.3);
+    }
+    
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 50%, var(--darkest) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .login-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .login-logo-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 24px;
+      color: white;
+      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+    }
+    
+    .login-logo-text {
+      font-weight: 800;
+      font-size: 24px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .login-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    /* FORM */
+    .login-form {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(26, 31, 71, 0.3));
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .form-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(26, 31, 71, 0.3));
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(26, 31, 71, 0.5));
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+    
+    input::placeholder {
+      color: var(--text-hint);
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    .remember-me input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--cyan);
+    }
+    
+    .btn-login {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+    
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    
+    .login-footer a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+    }
+    
+    .demo-info {
+      background: rgba(6, 182, 212, 0.05);
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .login-container {
+        padding: 1rem;
+      }
+      
+      .login-form {
+        padding: 1.5rem;
+      }
+      
+      .login-header {
+        margin-bottom: 2rem;
+      }
+      
+      .login-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">
+        <div class="login-logo-icon">BJ</div>
+        <div class="login-logo-text">BizJournal</div>
+      </div>
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-subtitle">Sign in to continue journaling</p>
+    </div>
+
+    <div class="demo-info">
+      💡 <strong>Demo Credentials:</strong><br>
+      Email: demo@bizjournal.com<br>
+      Password: demo123
+    </div>
+
+    <form class="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" placeholder="••••••••" required>
+      </div>
+
+      <div class="remember-me">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Remember me</label>
+      </div>
+
+      <button type="submit" class="btn-login">Sign In</button>
+    </form>
+
+    <div class="divider" style="margin: 1.5rem 0;"></div>
+
+    <div class="login-footer">
+      Don't have an account? <a href="register.html">Sign up for free</a><br><br>
+      <a href="index.html">← Back to home</a>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+      // In a real app, you would validate and submit to your backend
+      localStorage.setItem('user', JSON.stringify({ name: 'John Doe', email: 'demo@bizjournal.com' }));
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
